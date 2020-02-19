@@ -1,0 +1,15 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+#snake {
+    margin-top: 25px;
+    margin-bottom: 25px;
+    width: 100%;
+    text-align: center;
+}
+
+canvas {
+    display: inline;
+}
