@@ -6,6 +6,7 @@ window.onload = function () {
     var ctx;
     var delay = 100; //delay de rafraichissement de la page
     var snakee;
+    var applee;
 
     //appelle de fonction
     init();
@@ -25,6 +26,7 @@ window.onload = function () {
             [5, 4],
             [4, 4]
         ], 'right');
+        applee = new Apple([10,10]);
         refreshCanvas(); //appel la fonction refresh
 
     }
@@ -36,6 +38,7 @@ window.onload = function () {
         snakee.draw();
         //appelle la méthode advance
         snakee.advance();
+        applee.draw();
         //refresh le canvas toute les 100 miliseconde
         setTimeout(refreshCanvas, delay);
 
@@ -107,6 +110,22 @@ window.onload = function () {
                 this.direction = newDirection;
             }
         }
+    }
+
+    function Apple( position ) {
+        this.position = position;
+        //déssine ma pomme
+        this.draw = function() {
+            ctx.save();
+            ctx.fillStyle = "yellow";
+            ctx.beginPath();
+            var radius = blockSize/2;
+            var x = position[0]*blockSize + radius; 
+            var y = position[1]*blockSize + radius;
+            ctx.arc(x, y, radius, 0, Math.PI*2, true);
+            ctx.fill();
+            ctx.restore();
+        };
     }
 
     //associe les touches a des directions
