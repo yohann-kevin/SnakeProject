@@ -7,6 +7,8 @@ window.onload = function () {
     var delay = 100; //delay de rafraichissement de la page
     var snakee;
     var applee;
+    var widthInBlocks = canvasWidth / blockSize;
+    var heightInBlocks = canvasHeight / blockSize;
 
     //appelle de fonction
     init();
@@ -26,22 +28,25 @@ window.onload = function () {
             [5, 4],
             [4, 4]
         ], 'right');
-        applee = new Apple([10,10]);
+        applee = new Apple([10, 10]);
         refreshCanvas(); //appel la fonction refresh
 
     }
 
     function refreshCanvas() {
 
-        ctx.clearRect(0, 0, canvasWidth, canvasHeight); //efface le contenu
-        //appelle la méthode draw
-        snakee.draw();
         //appelle la méthode advance
         snakee.advance();
-        applee.draw();
-        //refresh le canvas toute les 100 miliseconde
-        setTimeout(refreshCanvas, delay);
-
+        if (snakee.checkCollision()) {
+            //game over
+        } else {
+            ctx.clearRect(0, 0, canvasWidth, canvasHeight); //efface le contenu
+            //appelle la méthode draw
+            snakee.draw();
+            applee.draw();
+            //refresh le canvas toute les 100 miliseconde
+            setTimeout(refreshCanvas, delay);
+        }
     }
 
     //déssine un block
@@ -109,20 +114,49 @@ window.onload = function () {
             if (allowedDirections.indexOf(newDirection) > -1) {
                 this.direction = newDirection;
             }
-        }
+        };
+
+        //vérifie les collisions
+        this.checkCollision = function () {
+            var wallCollision = false;
+            var snakeCollision = false;
+            var head = this.body[0];
+            var rest = this.body.slice(1);
+            var snakeX = head[0];
+            var snakeY = head[1];
+            var minX = 0;
+            var maxX = widthInBlocks - 1;
+            var minY = 0;
+            var maxY = heightInBlocks - 1;
+            var isNotBetweenHorizontalWalls = snakeX < minX || snakeX > maxX;
+            var isNotBetweenVerticalWalls = snakeY < minY || snakeY > maxY;
+
+            //vérifie que le serpent ne s'est pas pris un mur
+            if (isNotBetweenHorizontalWalls || isNotBetweenVerticalWalls) {
+                wallCollision = true;
+            }
+
+            //vérifie si le serpent n'est pas passé sur son propre corp
+            for (var i = 0; i < rest.length; i++) {
+                if (snakeX === rest[i][0] && snakeY === rest[i][1]) {
+                    snakeCollision = true;
+                }
+            }
+            return wallCollision || snakeCollision;
+        };
     }
 
-    function Apple( position ) {
+    function Apple(position) {
         this.position = position;
         //déssine ma pomme
-        this.draw = function() {
+        this.draw = function () {
             ctx.save();
             ctx.fillStyle = "yellow";
             ctx.beginPath();
-            var radius = blockSize/2;
-            var x = position[0]*blockSize + radius; 
-            var y = position[1]*blockSize + radius;
-            ctx.arc(x, y, radius, 0, Math.PI*2, true);
+            var radius = blockSize / 2;
+            var x = position[0] * blockSize + radius;
+            var y = position[1] * blockSize + radius;
+            ctx.arc(x, y, radius, 0, Math.PI * 2, true);
             ctx.fill();
             ctx.restore();
         };
