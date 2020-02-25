@@ -40,6 +40,13 @@ window.onload = function () {
         if (snakee.checkCollision()) {
             //game over
         } else {
+            if (snakee.isEatingApple(applee)) {
+                snakee.ateApple = true;
+                do{
+                    applee.setNewPosition();
+                }
+                while(applee.isOnSnake(snakee))
+            }
             ctx.clearRect(0, 0, canvasWidth, canvasHeight); //efface le contenu
             //appelle la méthode draw
             snakee.draw();
@@ -60,6 +67,7 @@ window.onload = function () {
     function snake(body, direction) {
         this.body = body;
         this.direction = direction;
+        this.ateApple = false;
         this.draw = function () {
             //sauvegarde le contenu du canvas
             ctx.save();
@@ -92,8 +100,13 @@ window.onload = function () {
                     throw ("Invalid Direction");
             }
             this.body.unshift(nextPosition);
-            //supprime le derniere element d'un array
-            this.body.pop();
+            if (!this.ateApple){
+                //supprime le derniere element d'un array
+                this.body.pop();
+            } else {
+                this.ateApple = false;
+            }
+            
         };
 
         //réstreint les directions possible
@@ -144,6 +157,17 @@ window.onload = function () {
             }
             return wallCollision || snakeCollision;
         };
+
+        //vérifie si le serpent  manger une pomme
+        this.isEatingApple = function(appleToEat) {
+            var head = this.body[0];
+            if (head[0] === appleToEat.position[0] && head[1] === appleToEat.position[1]) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        };
     }
 
     function Apple(position) {
@@ -154,12 +178,29 @@ window.onload = function () {
             ctx.fillStyle = "yellow";
             ctx.beginPath();
             var radius = blockSize / 2;
-            var x = position[0] * blockSize + radius;
-            var y = position[1] * blockSize + radius;
+            var x = this.position[0] * blockSize + radius;
+            var y = this.position[1] * blockSize + radius;
             ctx.arc(x, y, radius, 0, Math.PI * 2, true);
             ctx.fill();
             ctx.restore();
         };
+
+        this.setNewPosition = function() {
+            var newX = Math.round(Math.random() * (widthInBlocks - 1));
+            var newY = Math.round(Math.random() * (heightInBlocks - 1));
+            this.position = [newX, newY];
+        };
+        
+        //vérifiee si la pomme ne spawn pas sur le serpent
+        this.isOnSnake = function(snakeToCheck) {
+            var isOnSnake = false;
+            for (var i = 0; i < snakeToCheck.body.length; i++) {
+                if(this.position[0] === snakeToCheck.body[i][0] && this.position[1] === snakeToCheck.body[i][1]) {
+                    isOnSnake = true;
+                }
+            }
+            return isOnSnake;
+        }
     }
 
     //associe les touches a des directions
