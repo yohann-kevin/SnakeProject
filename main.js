@@ -63,8 +63,9 @@ window.onload = function () {
     //game over
     function gameOver() {
         ctx.save();
-        ctx.fillText("Game Over", 5, 15);
-        ctx.fillText("Appuyer sur la touche expace pour rejouer",5,30);
+        ctx.font = "30px Verdana";
+        ctx.fillText("Game Over", 5, 25);
+        ctx.fillText("Appuyer sur la touche espace pour rejouer",5,65);
         ctx.restore();
     }
 
@@ -83,7 +84,8 @@ window.onload = function () {
     //affiche le score
     function drawScore() {
         ctx.save();
-        ctx.fillText(score.toString(), 5, canvasHeight - 5);
+        ctx.font = "30px Verdana";
+        ctx.fillText("Score : " + score.toString(), canvasWidth - 160, canvasHeight - 5);
         ctx.restore();
     } 
 
