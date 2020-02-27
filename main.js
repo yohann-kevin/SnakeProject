@@ -85,7 +85,7 @@ window.onload = function () {
     function drawScore() {
         ctx.save();
         ctx.font = "30px Verdana";
-        ctx.fillText("Score : " + score.toString(), canvasWidth - 160, canvasHeight - 5)
+        ctx.fillText("Score : " + score.toString(), canvasWidth - 160, canvasHeight - 5);
         ctx.restore();
     } 
 
