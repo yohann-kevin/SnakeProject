@@ -9,6 +9,7 @@ window.onload = function () {
     var applee;
     var widthInBlocks = canvasWidth / blockSize;
     var heightInBlocks = canvasHeight / blockSize;
+    var score;
 
     //appelle de fonction
     init();
@@ -29,6 +30,7 @@ window.onload = function () {
             [4, 4]
         ], 'right');
         applee = new Apple([10, 10]);
+        score = 0;
         refreshCanvas(); //appel la fonction refresh
 
     }
@@ -38,9 +40,10 @@ window.onload = function () {
         //appelle la méthode advance
         snakee.advance();
         if (snakee.checkCollision()) {
-            //game over
+            gameOver();
         } else {
             if (snakee.isEatingApple(applee)) {
+                score++;
                 snakee.ateApple = true;
                 do{
                     applee.setNewPosition();
@@ -51,10 +54,38 @@ window.onload = function () {
             //appelle la méthode draw
             snakee.draw();
             applee.draw();
+            drawScore();
             //refresh le canvas toute les 100 miliseconde
             setTimeout(refreshCanvas, delay);
         }
     }
+
+    //game over
+    function gameOver() {
+        ctx.save();
+        ctx.fillText("Game Over", 5, 15);
+        ctx.fillText("Appuyer sur la touche expace pour rejouer",5,30);
+        ctx.restore();
+    }
+
+    //relance le jeux
+    function restart() {
+        snakee = new snake([
+            [6, 4],
+            [5, 4],
+            [4, 4]
+        ], 'right');
+        applee = new Apple([10, 10]);
+        score = 0;
+        refreshCanvas();
+    }
+
+    //affiche le score
+    function drawScore() {
+        ctx.save();
+        ctx.fillText(score.toString(), 5, canvasHeight - 5);
+        ctx.restore();
+    } 
 
     //déssine un block
     function drawBlock(ctx, position) {
@@ -209,17 +240,20 @@ window.onload = function () {
         var newDirection;
         switch (key) {
             case 81:
-                newDirection = "left";
+                newDirection = "left";      //déplacement gauche
                 break;
             case 90:
-                newDirection = "up";
+                newDirection = "up";        //déplacement haut
                 break;
             case 68:
-                newDirection = "right";
+                newDirection = "right";     //déplacement droite
                 break;
             case 83:
-                newDirection = "down";
+                newDirection = "down";      //déplacement bas
                 break;
+            case 32:
+                restart();
+                return;
             default:
                 return;
         }
