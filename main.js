@@ -16,14 +16,14 @@ window.onload = function () {
 
     function init() {
 
-        canvas = document.createElement('canvas'); //cree l'element canvas
+        canvas = document.createElement('canvas'); //crée l'element canvas
         canvas.width = canvasWidth;
         canvas.height = canvasHeight;
-        canvas.style.border = "3px solid";
-        //document.body.appendChild(canvas);//fixe le canvas a l'element html body
+        canvas.style.border = "25px solid #545454";
+        canvas.style.backgroundColor = "#ddd";
         document.getElementById("snake").appendChild(canvas); //fixe le canvas a mon main
         ctx = canvas.getContext('2d'); //indique le contexte
-        //creer un serpent avec 3block placé en fonction d x et y
+        //creer un serpent avec 3 block placé en fonction de x et y
         snakee = new snake([
             [6, 4],
             [5, 4],
@@ -52,9 +52,9 @@ window.onload = function () {
             }
             ctx.clearRect(0, 0, canvasWidth, canvasHeight); //efface le contenu
             //appelle la méthode draw
+            drawScore();
             snakee.draw();
             applee.draw();
-            drawScore();
             //refresh le canvas toute les 100 miliseconde
             setTimeout(refreshCanvas, delay);
         }
@@ -63,9 +63,19 @@ window.onload = function () {
     //game over
     function gameOver() {
         ctx.save();
-        ctx.font = "30px Verdana";
-        ctx.fillText("Game Over", 5, 25);
-        ctx.fillText("Appuyer sur la touche espace pour rejouer",5,65);
+        ctx.font = "bold 70px Verdana";
+        ctx.fillStyle = "#000";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.strokeStyle = "white";
+        ctx.lineWidth = 5;
+        var centerX = canvasWidth / 2;
+        var centerY = canvasHeight / 2;
+        ctx.strokeText("Game Over", centerX, centerY - 180);
+        ctx.fillText("Game Over", centerX, centerY - 180);
+        ctx.font = "bold 30px Verdana";
+        ctx.strokeText("Appuyer sur la touche espace pour rejouer", centerX, centerY - 120)
+        ctx.fillText("Appuyer sur la touche espace pour rejouer", centerX, centerY - 120)
         ctx.restore();
     }
 
@@ -84,8 +94,13 @@ window.onload = function () {
     //affiche le score
     function drawScore() {
         ctx.save();
-        ctx.font = "30px Verdana";
-        ctx.fillText("Score : " + score.toString(), canvasWidth - 160, canvasHeight - 5);
+        ctx.font = "bold 200px Verdana";
+        ctx.fillStyle = "#545454";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        var centerX = canvasWidth / 2;
+        var centerY = canvasHeight / 2;
+        ctx.fillText(score.toString(), centerX, centerY);
         ctx.restore();
     } 
 
@@ -104,7 +119,7 @@ window.onload = function () {
         this.draw = function () {
             //sauvegarde le contenu du canvas
             ctx.save();
-            ctx.fillStyle = "#ff0000";
+            ctx.fillStyle = "#ff9d00";
             for (var i = 0; i < this.body.length; i++) {
                 //appelle la foction drawBlock
                 drawBlock(ctx, this.body[i]);
@@ -208,7 +223,7 @@ window.onload = function () {
         //déssine ma pomme
         this.draw = function () {
             ctx.save();
-            ctx.fillStyle = "yellow";
+            ctx.fillStyle = "#1aff1a";
             ctx.beginPath();
             var radius = blockSize / 2;
             var x = this.position[0] * blockSize + radius;
