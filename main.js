@@ -16,7 +16,6 @@ window.onload = function () {
     init();
 
     function init() {
-
         canvas = document.createElement('canvas'); //crée l'element canvas
         canvas.width = canvasWidth;
         canvas.height = canvasHeight;
