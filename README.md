@@ -1,4 +1,4 @@
-### Documentation du snakeProject
+# Documentation du snakeProject
 
 ## note codeclimate :
 
