@@ -1,3 +1,5 @@
+<img src="snake.png">
+
 # Documentation du snakeProject
 
 ## note codeclimate :
