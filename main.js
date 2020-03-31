@@ -1,16 +1,15 @@
 window.onload = function () {startSnake()}
-
-    var canvasWidth = 900; //taille du canvas
-    var canvasHeight = 600; //taille du canvas
-    var blockSize = 30; //taille d'un block
-    var ctx;
-    var delay = 100; //delay de rafraichissement de la page
-    var snakee;
-    var applee;
-    var widthInBlocks = canvasWidth / blockSize;
-    var heightInBlocks = canvasHeight / blockSize;
-    var score;
-    var timeout;
+var canvasWidth = 900; //taille du canvas
+var canvasHeight = 600; //taille du canvas
+var blockSize = 30; //taille d'un block
+var ctx;
+var delay = 100; //delay de rafraichissement de la page
+var snakee;
+var applee;
+var widthInBlocks = canvasWidth / blockSize;
+var heightInBlocks = canvasHeight / blockSize;
+var score;
+var timeout;
 
     //démarre le jeu    
     function startSnake() {
@@ -194,9 +193,7 @@ window.onload = function () {startSnake()}
                 default:
                     throw ("Invalid Direction");
             }
-            if (allowedDirections.indexOf(newDirection) > -1) {
-                this.direction = newDirection;
-            }
+            if (allowedDirections.indexOf(newDirection) > -1) this.direction = newDirection;
         };
 
         //vérifie les collisions
@@ -215,15 +212,11 @@ window.onload = function () {startSnake()}
             var isNotBetweenVerticalWalls = snakeY < minY || snakeY > maxY;
 
             //vérifie que le serpent ne s'est pas pris un mur
-            if (isNotBetweenHorizontalWalls || isNotBetweenVerticalWalls) {
-                wallCollision = true;
-            }
+            if (isNotBetweenHorizontalWalls || isNotBetweenVerticalWalls) wallCollision = true;
 
             //vérifie si le serpent n'est pas passé sur son propre corp
             for (var i = 0; i < rest.length; i++) {
-                if (snakeX === rest[i][0] && snakeY === rest[i][1]) {
-                    snakeCollision = true;
-                }
+                if (snakeX === rest[i][0] && snakeY === rest[i][1])  snakeCollision = true;
             }
             return wallCollision || snakeCollision;
         };
