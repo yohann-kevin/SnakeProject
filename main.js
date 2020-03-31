@@ -1,4 +1,4 @@
-window.onload = function () {
+window.onload = function () {startSnake()}
 
     var canvasWidth = 900; //taille du canvas
     var canvasHeight = 600; //taille du canvas
@@ -12,9 +12,32 @@ window.onload = function () {
     var score;
     var timeout;
 
-    //appelle de fonction
-    init();
+    //démarre le jeu    
+    function startSnake() {
+        canvas = document.createElement('canvas'); //crée l'element canvas
+        canvas.width = canvasWidth;
+        canvas.height = canvasHeight;
+        canvas.style.border = "25px solid #545454";
+        canvas.style.backgroundColor = "#ddd";
+        document.getElementById("snake").appendChild(canvas); //fixe le canvas a mon main
+        ctx = canvas.getContext('2d'); //indique le contexte
+        ctx.font = "bold 70px Verdana";
+        ctx.fillStyle = "#000";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.strokeStyle = "white";
+        ctx.lineWidth = 5;
+        var centerX = canvasWidth / 2;
+        var centerY = canvasHeight / 2;
+        ctx.strokeText("Game Over", centerX, centerY - 180);
+        ctx.fillText("Game Over", centerX, centerY - 180);
+        ctx.font = "bold 30px Verdana";
+        ctx.strokeText("Appuyer sur la touche espace pour jouer", centerX, centerY - 120);
+        ctx.fillText("Appuyer sur la touche espace pour jouer", centerX, centerY - 120);
+        ctx.restore();
+    }
 
+    // initialise le jeux
     function init() {
         canvas = document.createElement('canvas'); //crée l'element canvas
         canvas.width = canvasWidth;
@@ -24,7 +47,7 @@ window.onload = function () {
         document.getElementById("snake").appendChild(canvas); //fixe le canvas a mon main
         ctx = canvas.getContext('2d'); //indique le contexte
         //creer un serpent avec 3 block placé en fonction de x et y
-        snakee = new snake([
+        snakee = new Snake([
             [6, 4],
             [5, 4],
             [4, 4]
@@ -32,11 +55,9 @@ window.onload = function () {
         applee = new Apple([10, 10]);
         score = 0;
         refreshCanvas(); //appel la fonction refresh
-
     }
 
     function refreshCanvas() {
-
         //appelle la méthode advance
         snakee.advance();
         if (snakee.checkCollision()) {
@@ -81,7 +102,7 @@ window.onload = function () {
 
     //relance le jeux
     function restart() {
-        snakee = new snake([
+        snakee = new Snake([
             [6, 4],
             [5, 4],
             [4, 4]
@@ -89,7 +110,7 @@ window.onload = function () {
         applee = new Apple([10, 10]);
         score = 0;
         clearTimeout(timeout);
-        refreshCanvas();
+        refreshCanvas();    
     }
 
     //affiche le score
@@ -113,7 +134,7 @@ window.onload = function () {
     }
 
     //fonction constructeur
-    function snake(body, direction) {
+    function Snake(body, direction) {
         this.body = body;
         this.direction = direction;
         this.ateApple = false;
@@ -240,13 +261,11 @@ window.onload = function () {
             this.position = [newX, newY];
         };
         
-        //vérifiee si la pomme ne spawn pas sur le serpent
+        //vérifie si la pomme ne spawn pas sur le serpent
         this.isOnSnake = function(snakeToCheck) {
             var isOnSnake = false;
             for (var i = 0; i < snakeToCheck.body.length; i++) {
-                if(this.position[0] === snakeToCheck.body[i][0] && this.position[1] === snakeToCheck.body[i][1]) {
-                    isOnSnake = true;
-                }
+                if(this.position[0] === snakeToCheck.body[i][0] && this.position[1] === snakeToCheck.body[i][1]) isOnSnake = true;     
             }
             return isOnSnake;
         }
@@ -277,4 +296,3 @@ window.onload = function () {
         }
         snakee.setDirection(newDirection);
     }
-}
